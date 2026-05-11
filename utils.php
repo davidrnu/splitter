@@ -4,6 +4,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->safeLoad();
 
+foreach (['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS', 'RESEND_API_KEY', 'DOMAIN'] as $key) {
+    if (!isset($_ENV[$key]) && getenv($key) !== false) {
+        $_ENV[$key] = getenv($key);
+    }
+}
+
 
 function comprobarSesion() {
   if (session_status() === PHP_SESSION_NONE) {
