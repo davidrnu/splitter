@@ -1,3 +1,11 @@
+function mostrarMensaje(texto, tipo = 'ok') {
+  const msg = document.createElement('div');
+  msg.textContent = texto;
+  msg.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded shadow text-sm font-medium ${tipo === 'ok' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 3000);
+}
+
 document.getElementById('btn-nuevo').addEventListener('click', () => {
   document.getElementById('form-nuevo-grupo').classList.toggle('hidden');
 });
@@ -31,5 +39,8 @@ document.getElementById('btn-crear').addEventListener('click', async () => {
     document.getElementById('form-nuevo-grupo').classList.add('hidden');
     document.getElementById('input-nombre').value = '';
     document.getElementById('input-desc').value   = '';
+    mostrarMensaje('Grupo creado correctamente');
+  } else {
+    mostrarMensaje('Error al crear el grupo', 'error');
   }
 });

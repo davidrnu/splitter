@@ -1,3 +1,11 @@
+function mostrarMensaje(texto, tipo = 'ok') {
+  const msg = document.createElement('div');
+  msg.textContent = texto;
+  msg.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded shadow text-sm font-medium ${tipo === 'ok' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 3000);
+}
+
 // Recarga balances y gastos desde la API y actualiza el DOM
 async function actualizarGrupo() {
   const res   = await fetch(`api/grupos.php?id=${grupoId}`);
@@ -56,7 +64,8 @@ function registrarBotonesBorrar() {
 
       const res = await fetch('api/gastos.php', { method: 'POST', body: datos });
       const resultado = await res.json();
-      if (resultado.ok) actualizarGrupo();
+      if (resultado.ok) { actualizarGrupo(); mostrarMensaje('Gasto eliminado'); }
+      else mostrarMensaje('Error al eliminar el gasto', 'error');
     });
   });
 }
@@ -74,6 +83,9 @@ document.getElementById('form-gasto').addEventListener('submit', async (e) => {
   if (resultado.ok) {
     e.target.reset();
     actualizarGrupo();
+    mostrarMensaje('Gasto añadido correctamente');
+  } else {
+    mostrarMensaje('Error al añadir el gasto', 'error');
   }
 });
 
@@ -89,6 +101,9 @@ document.getElementById('form-transferencia').addEventListener('submit', async (
   if (resultado.ok) {
     e.target.reset();
     actualizarGrupo();
+    mostrarMensaje('Transferencia registrada');
+  } else {
+    mostrarMensaje('Error al registrar la transferencia', 'error');
   }
 });
 
@@ -106,6 +121,9 @@ if (btnInvitacion) {
       input.value = resultado.enlace;
       input.classList.remove('hidden');
       input.select();
+      mostrarMensaje('Enlace de invitación generado');
+    } else {
+      mostrarMensaje('Error al generar la invitación', 'error');
     }
   });
 }
